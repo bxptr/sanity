@@ -1,0 +1,9 @@
+(in)sanity
+==========
+
+for something between the likes of a toy bootloader or tiny kernel and Arch Linux.
+
+currently a work in progress but eventually the next dominant OS.
+
+aims to remain small and to be the easiest system to add new architectures to.
+
