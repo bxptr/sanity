@@ -5,12 +5,10 @@
 
 mod api;
 mod sys;
-use crate::sys::idt::{init_idt};
+use crate::sys::idt::init_idt;
+use crate::sys::gdt::init_gdt;
 
 use core::panic::PanicInfo;
-
-extern crate x86_64;
-use self::x86_64::instructions::interrupts;
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -22,7 +20,11 @@ fn init() {
     println!("[info] loaded sanity");
     println!("[info] loading idt...");
     init_idt();
-    x86_64::instructions::interrupts::int3();
+    println!("[info] loading gdt...");
+    init_gdt();
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
     println!("[info] sanity init complete");
 }
 
