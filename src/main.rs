@@ -3,10 +3,8 @@
 
 #![feature(abi_x86_interrupt)]
 
-mod api;
-mod sys;
-use crate::sys::idt::init_idt;
-use crate::sys::gdt::init_gdt;
+use sanity::{sys};
+use sanity::{println};
 
 use core::panic::PanicInfo;
 
@@ -19,9 +17,9 @@ fn panic(info: &PanicInfo) -> ! {
 fn init() {
     println!("[info] loaded sanity");
     println!("[info] loading idt...");
-    init_idt();
+    sys::idt::init_idt();
     println!("[info] loading gdt...");
-    init_gdt();
+    sys::gdt::init_gdt();
     unsafe {
         *(0xdeadbeef as *mut u64) = 42;
     };
