@@ -1,13 +1,11 @@
 use core::fmt;
+use core::fmt::Write;
 
-extern crate volatile;
-use self::volatile::Volatile;
+use volatile::Volatile;
+use lazy_static::lazy_static;
+use spin::Mutex;
 
-extern crate lazy_static;
-use self::lazy_static::lazy_static;
-
-extern crate spin;
-use self::spin::Mutex;
+use x86_64::instructions::interrupts;
 
 const HEIGHT: usize = 25;
 const WIDTH: usize = 80;
@@ -37,7 +35,7 @@ pub enum Color {
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column: 0,
-        color_entry: ColorEntry::new(Color::Yellow, Color::Black),
+        color_entry: ColorEntry::new(Color::White, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
     });
 }
@@ -129,8 +127,9 @@ impl fmt::Write for Writer {
 }
 
 pub fn _print(args: fmt::Arguments) {
-    use core::fmt::Write;
-    WRITER.lock().write_fmt(args).unwrap();
+    interrupts::without_interrupts(|| {
+        WRITER.lock().write_fmt(args).unwrap();
+    });
 }
 
 
