@@ -1,8 +1,6 @@
 #![no_std]
 #![no_main]
 
-#![feature(abi_x86_interrupt)]
-
 use sanity::{sys};
 use sanity::{println};
 

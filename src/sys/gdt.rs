@@ -1,12 +1,10 @@
-extern crate lazy_static;
 use self::lazy_static::lazy_static;
 
-extern crate x86_64;
-use self::x86_64::structures::gdt::{Descriptor, GlobalDescriptorTable, SegmentSelector};
-use self::x86_64::structures::tss::TaskStateSegment;
-use self::x86_64::VirtAddr;
-use self::x86_64::instructions::segmentation::{Segment, CS};
-use self::x86_64::instructions::tables::load_tss;
+use x86_64::structures::gdt::{Descriptor, GlobalDescriptorTable, SegmentSelector};
+use x86_64::structures::tss::TaskStateSegment;
+use x86_64::VirtAddr;
+use x86_64::instructions::segmentation::{Segment, CS};
+use x86_64::instructions::tables::load_tss;
 
 pub const DOUBLE_FAULT_INDEX: u16 = 0;
 
