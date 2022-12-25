@@ -23,12 +23,11 @@ fn panic(info: &PanicInfo) -> ! {
 fn init() {
     println!("[info] loaded sanity");
     println!("[info] loading idt...");
-    sys::idt::init_idt();
+    sys::idt::init();
     println!("[info] loading gdt...");
-    sys::gdt::init_gdt();
+    sys::gdt::init();
     println!("[info] loading pic...");
-    unsafe { sys::idt::PICS.lock().initialize() };
-    x86_64::instructions::interrupts::enable();
+    sys::pic::init();
     println!("[info] sanity init complete");
 }
 
