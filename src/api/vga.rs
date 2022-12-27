@@ -103,16 +103,6 @@ impl Writer {
         self.row += 1;
         self.column = 0;
     }
-
-    fn clear_row(&mut self, row: usize) {
-        let blank = Char {
-            ascii: b' ',
-            color_entry: self.color_entry,
-        };
-        for column in 0..WIDTH {
-            self.buffer.chars[row][column].write(blank);
-        }
-    }
 }
 
 impl fmt::Write for Writer {
