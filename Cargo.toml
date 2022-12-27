@@ -29,10 +29,10 @@ default-features = false
 features = ["alloc"]
 
 [dependencies.conquer-once]
-version = "0.2.0"
+version = "0.3.2"
 default-features = false
 
 [dependencies.futures-util]
-version = "0.3.4"
+version = "0.3.25"
 default-features = false
 features = ["alloc"]
