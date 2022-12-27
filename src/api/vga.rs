@@ -34,6 +34,7 @@ pub enum Color {
 
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
+        row: 0,
         column: 0,
         color_entry: ColorEntry::new(Color::White, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
@@ -63,6 +64,7 @@ struct Buffer {
 }
 
 pub struct Writer {
+    row: usize,
     column: usize,
     color_entry: ColorEntry,
     buffer: &'static mut Buffer,
@@ -76,7 +78,7 @@ impl Writer {
                 if self.column >= WIDTH {
                     self.newline();
                 }
-                let row = HEIGHT - 1;
+                let row = self.row;
                 let column = self.column;
                 let color_entry = self.color_entry;
                 self.buffer.chars[row][column].write(Char {
@@ -98,13 +100,7 @@ impl Writer {
     }
 
     fn newline(&mut self) {
-        for row in 1..HEIGHT {
-            for column in 0..WIDTH {
-                let character = self.buffer.chars[row][column].read();
-                self.buffer.chars[row - 1][column].write(character);
-            }
-        }
-        self.clear_row(HEIGHT - 1);
+        self.row += 1;
         self.column = 0;
     }
 
